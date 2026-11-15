@@ -69,7 +69,7 @@
 
 /* =========================================================================
 
-   FATOS:
+   FATOS DE APOIO:
 
    =========================================================================
    Generos: Familia agrupa generos parecidos
@@ -231,3 +231,251 @@
    horario(manha,     media).
    horario(tarde,     alta).
    horario(noite,     baixa).
+
+/* =========================================================================
+
+   FATOS DE MUSICAS E ASSOCIACOES:
+
+   =========================================================================
+   musica(Id, Titulo, Artista, Genero, Ano, Idioma, Ritmo, Energia, Clima)
+   -------------------------------------------------------------------------*/
+
+   % brasileiras:
+   musica(m01, show_das_poderosas, anitta, pop, 2013, portugues, acelerado, alta, alegre).
+   musica(m02, girl_from_rio, anitta, pop, 2021, ingles, moderado, media, alegre).
+   musica(m03, tempo_perdido, legiao_urbana, rock, 1986, portugues, moderado, media, melancolico).
+   musica(m04, eduardo_e_monica, legiao_urbana, rock, 1986, portugues, moderado, media, romantico).
+   musica(m05, oceano, djavan, mpb, 1989, portugues, lento, baixa, romantico).
+   musica(m06, sina, djavan, mpb, 1982, portugues, moderado, media, romantico).
+   musica(m07, dia_branco, geraldo_azevedo, mpb, 1977, portugues, lento, baixa, romantico).
+   musica(m08, construcao, chico_buarque, mpb, 1971, portugues, moderado, media, melancolico).
+   musica(m09, asa_branca, luiz_gonzaga, forro, 1947, portugues, lento, baixa, melancolico).
+   musica(m10, xote_das_meninas, luiz_gonzaga, forro, 1953, portugues, moderado, media, alegre).
+   musica(m11, anunciacao, alceu_valenca, forro, 1983, portugues, moderado, media, romantico).
+   musica(m12, as_rosas_nao_falam, cartola, samba, 1976, portugues, lento, baixa, melancolico).
+   musica(m13, deixa_a_vida_me_levar, zeca_pagodinho, pagode, 2002, portugues, moderado, media, alegre).
+   musica(m14, sosseguei, jorge_e_mateus, sertanejo, 2017, portugues, moderado, media, romantico).
+   musica(m15, infiel, marilia_mendonca, sertanejo, 2016, portugues, moderado, media, melancolico).
+   musica(m16, cheguei, ludmilla, funk, 2017, portugues, acelerado, alta, alegre).
+   musica(m17, negro_drama, racionais_mcs, rap, 2002, portugues, moderado, media, melancolico).
+   musica(m18, capitulo_4_versiculo_3, racionais_mcs, rap, 1997, portugues, moderado, alta, motivacional).
+   musica(m19, amarelo, emicida, hip_hop, 2019, portugues, moderado, media, motivacional).
+   musica(m20, levanta_e_anda, emicida, hip_hop, 2013, portugues, moderado, alta, motivacional).
+
+   % internacionais:
+   musica(m21, three_little_birds, bob_marley, reggae, 1977, ingles, lento, baixa, alegre).
+   musica(m22, no_woman_no_cry, bob_marley, reggae, 1974, ingles, lento, baixa, melancolico).
+   musica(m23, get_lucky, daft_punk, eletronica, 2013, ingles, moderado, alta, alegre).
+   musica(m24, veridis_quo, daft_punk, eletronica, 2001, instrumental, moderado, media, neutro).
+   musica(m25, bohemian_rhapsody, queen, rock, 1975, ingles, moderado, media, melancolico).
+   musica(m26, dont_stop_me_now, queen, rock, 1979, ingles, acelerado, alta, alegre).
+   musica(m27, maggie_may, rod_stewart, rock, 1971, ingles, moderado, media, melancolico).
+   musica(m28, fix_you, coldplay, pop, 2005, ingles, lento, baixa, melancolico).
+   musica(m29, viva_la_vida, coldplay, pop, 2008, ingles, moderado, alta, motivacional).
+   musica(m30, blinding_lights, the_weeknd, pop, 2019, ingles, acelerado, alta, alegre).
+   musica(m31, ocean_eyes, billie_eilish, pop, 2016, ingles, lento, baixa, romantico).
+   musica(m32, bad_guy, billie_eilish, pop, 2019, ingles, moderado, media, neutro).
+   musica(m33, enter_sandman, metallica, metal, 1991, ingles, moderado, alta, motivacional).
+   musica(m34, nothing_else_matters, metallica, metal, 1991, ingles, lento, baixa, romantico).
+   musica(m35, so_what, miles_davis, jazz, 1959, instrumental, moderado, baixa, neutro).
+   musica(m36, blue_in_green, miles_davis, jazz, 1959, instrumental, lento, baixa, melancolico).
+   musica(m37, the_thrill_is_gone, bb_king, blues, 1969, ingles, lento, baixa, melancolico).
+   musica(m38, let_it_happen, tame_impala, indie, 2015, ingles, acelerado, alta, motivacional).
+   musica(m39, fur_elise, beethoven, classica, 1810, instrumental, lento, baixa, romantico).
+   musica(m40, sonata_ao_luar, beethoven, classica, 1801, instrumental, lento, baixa, melancolico).
+
+   % latinas e asiaticas:
+   musica(m41, dakiti, bad_bunny, reggaeton, 2020, espanhol, moderado, media, alegre).
+   musica(m42, titi_me_pregunto, bad_bunny, reggaeton, 2022, espanhol, moderado, alta, alegre).
+   musica(m43, aruarian_dance, nujabes, lofi, 2004, instrumental, lento, baixa, neutro).
+   musica(m44, hips_dont_lie, shakira, pop, 2006, ingles, moderado, alta, alegre).
+   musica(m45, la_tortura, shakira, pop, 2005, espanhol, moderado, media, melancolico).
+   musica(m46, malamente, rosalia, pop, 2018, espanhol, moderado, media, neutro).
+   musica(m47, despecha, rosalia, pop, 2022, espanhol, acelerado, alta, alegre).
+   musica(m48, el_cantante, willie_colon, salsa, 1978, espanhol, moderado, media, melancolico).
+   musica(m49, corazon_sin_cara, prince_royce, bachata, 2010, espanhol, moderado, media, romantico).
+   musica(m50, darte_un_beso, prince_royce, bachata, 2013, espanhol, moderado, media, romantico).
+
+/* --------------------------------------------------------------------------
+   Humor que combina com generos:
+   humor_combina_genero(Humor, Genero)
+   -------------------------------------------------------------------------- */
+
+   % feliz:
+   humor_combina_genero(feliz, pop).
+   humor_combina_genero(feliz, pagode).
+   humor_combina_genero(feliz, forro).
+   humor_combina_genero(feliz, reggae).
+   humor_combina_genero(feliz, salsa).
+
+   % animado:
+   humor_combina_genero(animado, funk).
+   humor_combina_genero(animado, pop).
+   humor_combina_genero(animado, eletronica).
+   humor_combina_genero(animado, reggaeton).
+   humor_combina_genero(animado, rock).
+   humor_combina_genero(animado, salsa).
+
+   % motivado:
+   humor_combina_genero(motivado, rap).
+   humor_combina_genero(motivado, hip_hop).
+   humor_combina_genero(motivado, rock).
+   humor_combina_genero(motivado, metal).
+   humor_combina_genero(motivado, indie).
+   humor_combina_genero(motivado, eletronica).
+
+   % triste:
+   humor_combina_genero(triste, blues).
+   humor_combina_genero(triste, jazz).
+   humor_combina_genero(triste, sertanejo).
+   humor_combina_genero(triste, mpb).
+   humor_combina_genero(triste, classica).
+   humor_combina_genero(triste, samba).
+
+   % nostalgico:
+   humor_combina_genero(nostalgico, mpb).
+   humor_combina_genero(nostalgico, forro).
+   humor_combina_genero(nostalgico, samba).
+   humor_combina_genero(nostalgico, rock).
+   humor_combina_genero(nostalgico, reggae).
+
+   % romantico:
+   humor_combina_genero(romantico, bachata).
+   humor_combina_genero(romantico, mpb).
+   humor_combina_genero(romantico, sertanejo).
+   humor_combina_genero(romantico, pop).
+   humor_combina_genero(romantico, jazz).
+   humor_combina_genero(romantico, classica).
+
+   % relaxado:
+   humor_combina_genero(relaxado, lofi).
+   humor_combina_genero(relaxado, jazz).
+   humor_combina_genero(relaxado, reggae).
+   humor_combina_genero(relaxado, classica).
+   humor_combina_genero(relaxado, mpb).
+
+   % estressado:
+   humor_combina_genero(estressado, lofi).
+   humor_combina_genero(estressado, classica).
+   humor_combina_genero(estressado, jazz).
+   humor_combina_genero(estressado, blues).
+   humor_combina_genero(estressado, reggae).
+
+/* --------------------------------------------------------------------------
+   Atividades que combinam com generos:
+   atividade_combina_genero(Atividade, Genero)
+   -------------------------------------------------------------------------- */
+
+   % treino:
+   atividade_combina_genero(treino, metal).
+   atividade_combina_genero(treino, rap).
+   atividade_combina_genero(treino, hip_hop).
+   atividade_combina_genero(treino, funk).
+   atividade_combina_genero(treino, eletronica).
+   atividade_combina_genero(treino, rock).
+
+   % festa:
+   atividade_combina_genero(festa, funk).
+   atividade_combina_genero(festa, reggaeton).
+   atividade_combina_genero(festa, salsa).
+   atividade_combina_genero(festa, pagode).
+   atividade_combina_genero(festa, forro).
+   atividade_combina_genero(festa, pop).
+   atividade_combina_genero(festa, sertanejo).
+
+   % trabalho:
+   atividade_combina_genero(trabalho, indie).
+   atividade_combina_genero(trabalho, pop).
+   atividade_combina_genero(trabalho, mpb).
+   atividade_combina_genero(trabalho, jazz).
+   atividade_combina_genero(trabalho, lofi).
+
+   % viagem:
+   atividade_combina_genero(viagem, rock).
+   atividade_combina_genero(viagem, pop).
+   atividade_combina_genero(viagem, sertanejo).
+   atividade_combina_genero(viagem, mpb).
+   atividade_combina_genero(viagem, reggae).
+   atividade_combina_genero(viagem, indie).
+
+   % dirigir:
+   atividade_combina_genero(dirigir, rock).
+   atividade_combina_genero(dirigir, pop).
+   atividade_combina_genero(dirigir, metal).
+   atividade_combina_genero(dirigir, sertanejo).
+   atividade_combina_genero(dirigir, eletronica).
+   atividade_combina_genero(dirigir, indie).
+
+   % cozinhar:
+   atividade_combina_genero(cozinhar, samba).
+   atividade_combina_genero(cozinhar, pagode).
+   atividade_combina_genero(cozinhar, mpb).
+   atividade_combina_genero(cozinhar, salsa).
+   atividade_combina_genero(cozinhar, jazz).
+   atividade_combina_genero(cozinhar, reggae).
+   atividade_combina_genero(cozinhar, bachata).
+
+   % estudo:
+   atividade_combina_genero(estudo, lofi).
+   atividade_combina_genero(estudo, classica).
+   atividade_combina_genero(estudo, jazz).
+
+   % relaxar:
+   atividade_combina_genero(relaxar, reggae).
+   atividade_combina_genero(relaxar, mpb).
+   atividade_combina_genero(relaxar, jazz).
+   atividade_combina_genero(relaxar, blues).
+   atividade_combina_genero(relaxar, lofi).
+   atividade_combina_genero(relaxar, classica).
+
+   % dormir:
+   atividade_combina_genero(dormir, classica).
+   atividade_combina_genero(dormir, lofi).
+   atividade_combina_genero(dormir, jazz).
+   atividade_combina_genero(dormir, blues).
+
+/* --------------------------------------------------------------------------
+   Generos similares: pares de generos parecidos.
+   genero_similar(Genero1, Genero2)
+   -------------------------------------------------------------------------- */
+
+   genero_similar(rock, metal).
+   genero_similar(metal, rock).
+   genero_similar(rock, indie).
+   genero_similar(indie, rock).
+   genero_similar(rock, blues).
+   genero_similar(blues, rock).
+   genero_similar(indie, pop).
+   genero_similar(pop, indie).
+   genero_similar(pop, eletronica).
+   genero_similar(eletronica, pop).
+   genero_similar(pop, sertanejo).
+   genero_similar(sertanejo, pop).
+   genero_similar(rap, hip_hop).
+   genero_similar(hip_hop, rap).
+   genero_similar(funk, rap).
+   genero_similar(rap, funk).
+   genero_similar(funk, reggaeton).
+   genero_similar(reggaeton, funk).
+   genero_similar(reggae, reggaeton).
+   genero_similar(reggaeton, reggae).
+   genero_similar(salsa, bachata).
+   genero_similar(bachata, salsa).
+   genero_similar(samba, pagode).
+   genero_similar(pagode, samba).
+   genero_similar(mpb, samba).
+   genero_similar(samba, mpb).
+   genero_similar(forro, mpb).
+   genero_similar(mpb, forro).
+   genero_similar(forro, sertanejo).
+   genero_similar(sertanejo, forro).
+   genero_similar(jazz, blues).
+   genero_similar(blues, jazz).
+   genero_similar(jazz, lofi).
+   genero_similar(lofi, jazz).
+   genero_similar(jazz, classica).
+   genero_similar(classica, jazz).
+   genero_similar(lofi, classica).
+   genero_similar(classica, lofi).
+   genero_similar(eletronica, lofi).
+   genero_similar(lofi, eletronica).
