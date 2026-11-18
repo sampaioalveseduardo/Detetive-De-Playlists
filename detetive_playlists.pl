@@ -66,6 +66,7 @@
      genero_similar(Genero1, Genero2)
 
    ------------------------------------------------------------------------*/
+<<<<<<< HEAD
 
 /* =========================================================================
 
@@ -575,3 +576,5 @@ atividade citadas acima.*/
 % instrumental(Id): musicas instrumentais.
   instrumental(Id) :-
     musica(Id, _, _, _, _, instrumental, _, _, _).
+=======
+>>>>>>> a4613f84f3cbeae93d55fa49dfab35bfabb97e52
