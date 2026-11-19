@@ -7,7 +7,7 @@
    MODELO DOS DADOS:
 
    --------------------------------------------------------------------------
-   ENTIDADES PRINCIPAIS
+   ENTIDADES PRINCIPAIS:
    --------------------------------------------------------------------------
 
      musica(Id, Titulo, Artista, Genero, Ano, Idioma, Ritmo, Energia,
@@ -40,25 +40,27 @@
        BpmMed : batidas por minuto medias da faixa
 
    --------------------------------------------------------------------------
-   CONTEXTO DO USUARIO (O que o usuario informa)
+   CONTEXTO DO USUARIO: (O que o usuario informa)
    --------------------------------------------------------------------------
 
      humor(Nome, Energia, Clima)
-       Nome     : feliz, triste, estressado, animado
-       Energia  : baixa | media | alta
-       Clima    : alegre | melancolico | romantico | motivacional | neutro
+       Nome : feliz, triste, estressado, animado, motivado, nostalgico,
+       romantico, relaxado
+       Energia : baixa | media | alta
+       Clima : alegre | melancolico | romantico | motivacional | neutro
 
      atividade(Nome, Energia, Ritmo)
-       Nome     : treino, estudo, festa, relaxar, viagem, trabalho
-       Energia  : baixa | media | alta
-       Ritmo    : lento | moderado | acelerado
+       Nome : treino, estudo, festa, relaxar, viagem, trabalho, dirigir,
+       cozinhar, dormir
+       Energia : baixa | media | alta
+       Ritmo : lento | moderado | acelerado
 
      horario(Periodo, Energia)
        Periodo  : madrugada | manha | tarde | noite
        Energia  : energia mais adequada para esse periodo
 
    --------------------------------------------------------------------------
-   ASSOCIACOES
+   ASSOCIACOES:
    --------------------------------------------------------------------------
 
      humor_combina_genero(Humor, Genero)
@@ -479,3 +481,119 @@
    genero_similar(classica, lofi).
    genero_similar(eletronica, lofi).
    genero_similar(lofi, eletronica).
+
+/* --------------------------------------------------------------------------
+  REGRAS DE CLASSIFICACAO:
+  Cada regra recebe o Id de uma musica e diz se ela pertence a uma
+  categoria. As basicas usam so os atributos de musica e as de
+  combinacao reaproveitam outras regras ou cruzam com artista e ritmo.
+  -------------------------------------------------------------------------- */
+
+/* --------------------------------------------------------------------------
+  Por energia:
+  -------------------------------------------------------------------------- */
+
+% energetica(Id): Musica tem energia alta (agita, empolga).
+  energetica(Id) :-
+    musica(Id, _, _, _, _, _, _, alta, _).
+
+% calma(Id): Musica tem energia baixa (acalma, para descansar).
+  calma(Id) :-
+    musica(Id, _, _, _, _, _, _, baixa, _).
+
+% energia_media(Id): nem agita, nem acalma, serve para o dia a dia.
+  energia_media(Id) :-
+    musica(Id, _, _, _, _, _, _, media, _).
+
+/* --------------------------------------------------------------------------
+  Por ritmo:
+  -------------------------------------------------------------------------- */
+
+% acelerada(Id): ritmo acelerado (130 bpm).
+  acelerada(Id) :-
+    musica(Id, _, _, _, _, _, acelerado, _, _).
+
+% lenta(Id): ritmo lento (70 bpm).
+  lenta(Id) :-
+    musica(Id, _, _, _, _, _, lento, _, _).
+
+/* --------------------------------------------------------------------------
+  Por clima:
+  -------------------------------------------------------------------------- */
+
+% alegre(Id): base para recomendar por humor feliz/animado.
+  alegre(Id) :-
+    musica(Id, _, _, _, _, _, _, _, alegre).
+
+% melancolica(Id): base para recomendar por humor triste/nostalgico.
+  melancolica(Id) :-
+    musica(Id, _, _, _, _, _, _, _, melancolico).
+
+% romantica(Id): base para recomendar por humor romantico.
+  romantica(Id) :-
+    musica(Id, _, _, _, _, _, _, _, romantico).
+
+% motivacional(Id): base para recomendar por humor motivado e atividades
+% de energia alta.
+  motivacional(Id) :-
+    musica(Id, _, _, _, _, _, _, _, motivacional).
+
+/* --------------------------------------------------------------------------
+  Por epoca:
+  -------------------------------------------------------------------------- */
+
+% recente(Id): lancada de 2010 em diante, ultima decada.
+  recente(Id) :-
+    musica(Id, _, _, _, Ano, _, _, _, _),
+    Ano >= 2010.
+
+% intermediaria(Id): lancada de 2000 a 2009, entre antiga e recente,
+% para que toda musica caia numa faixa.
+  intermediaria(Id) :-
+    musica(Id, _, _, _, Ano, _, _, _, _),
+    Ano >= 2000,
+    Ano < 2010.
+
+% antiga(Id): lancada antes de 2000, nos seculos passados.
+   antiga(Id) :-
+    musica(Id, _, _, _, Ano, _, _, _, _),
+    Ano < 2000.
+
+/* --------------------------------------------------------------------------
+  Classificacoes distintas:
+  -------------------------------------------------------------------------- */
+
+% instrumental(Id): musicas instrumentais.
+  instrumental(Id) :-
+    musica(Id, _, _, _, _, instrumental, _, _, _).
+
+/* --------------------------------------------------------------------------
+  Por combinacao: (mais de um atributo ou predicado):
+  Reaproveitam as regras acima e cruzam musica com outros fatos.
+  -------------------------------------------------------------------------- */
+
+% hit_recente(Id): recente e energetica, ou seja, sucesso atual.
+  hit_recente(Id) :-
+    recente(Id),
+    energetica(Id).
+
+% trilha_de_foco(Id): instrumental e calma, sem letra para distrair
+% (estudo).
+  trilha_de_foco(Id) :-
+    instrumental(Id),
+    calma(Id).
+
+% serenata(Id): romantica e calma, para momentos a dois.
+  serenata(Id) :-
+    romantica(Id),
+    calma(Id).
+
+% brasileira(Id): artista de origem brasileira (cruza musica com artista).
+  brasileira(Id) :-
+    musica(Id, _, Artista, _, _, _, _, _, _),
+    artista(Artista, brasil, _).
+
+% bpm_da_musica(Id, Bpm): bpm medio do ritmo da musica (cruza com ritmo).
+  bpm_da_musica(Id, Bpm) :-
+    musica(Id, _, _, _, _, _, Ritmo, _, _),
+    ritmo(Ritmo, Bpm).
