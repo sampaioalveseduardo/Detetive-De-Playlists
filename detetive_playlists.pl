@@ -482,12 +482,15 @@
    genero_similar(eletronica, lofi).
    genero_similar(lofi, eletronica).
 
-/* --------------------------------------------------------------------------
-  REGRAS DE CLASSIFICACAO:
-  Cada regra recebe o Id de uma musica e diz se ela pertence a uma
-  categoria. As basicas usam so os atributos de musica e as de
-  combinacao reaproveitam outras regras ou cruzam com artista e ritmo.
-  -------------------------------------------------------------------------- */
+/* =========================================================================
+
+   REGRAS DE CLASSIFICACAO:
+
+   =========================================================================
+   Cada regra recebe o Id de uma musica e diz se ela pertence a uma
+   categoria. As basicas usam so os atributos de musica e as de
+   combinacao reaproveitam outras regras ou cruzam com artista e ritmo.
+   ------------------------------------------------------------------------- */
 
 /* --------------------------------------------------------------------------
   Por energia:
@@ -597,3 +600,80 @@
   bpm_da_musica(Id, Bpm) :-
     musica(Id, _, _, _, _, _, Ritmo, _, _),
     ritmo(Ritmo, Bpm).
+
+/* ==========================================================================
+
+   REGRAS DE COMPATIBILIDADE:
+
+   ==========================================================================
+   Ligam uma musica ao contexto informado pelo usuario (humor, atividade,
+   horario). Recebem o Id da musica e o contexto.
+   -------------------------------------------------------------------------*/
+
+/* --------------------------------------------------------------------------
+  Compatibilidade com o contexto do usuario
+  -------------------------------------------------------------------------- */
+
+% combina_humor(Id, Humor): a musica tem a energia e o clima que o humor
+% pede. Os dois atributos sao obrigatorios.
+  combina_humor(Id, Humor) :-
+    humor(Humor, Energia, Clima),
+    musica(Id, _, _, _, _, _, _, Energia, Clima).
+
+% humor_ideal(Id, Humor): combina com o humor e o genero da musica e
+% tipico desse humor. E a compatibilidade mais forte.
+  humor_ideal(Id, Humor) :-
+    combina_humor(Id, Humor),
+    musica(Id, _, _, Genero, _, _, _, _, _),
+    humor_combina_genero(Humor, Genero).
+
+% combina_atividade(Id, Atividade): a energia da musica e a da atividade
+% e mais um dos dois criterios abaixo. As duas clausulas funcionam como
+% "ou".
+
+% Criterio 1: o ritmo da musica e o da atividade.
+  combina_atividade(Id, Atividade) :-
+    atividade(Atividade, Energia, Ritmo),
+    musica(Id, _, _, _, _, _, Ritmo, Energia, _).
+
+% Criterio 2: o genero e tipico da atividade (atividade_combina_genero).
+% O "\=" exclui as musicas que ja entraram no criterio 1, para nao
+% aparecerem repetidas. Este criterio cobre musicas de ritmo moderado e
+% energia alta ou baixa, que o ritmo sozinho deixaria sem nenhuma
+% atividade.
+  combina_atividade(Id, Atividade) :-
+    atividade(Atividade, Energia, Ritmo),
+    musica(Id, _, _, Genero, _, _, RitmoMusica, Energia, _),
+    RitmoMusica \= Ritmo,
+    atividade_combina_genero(Atividade, Genero).
+
+% combina_horario(Id, Periodo): a energia da musica e a mais adequada para
+% o periodo do dia: calma de madrugada e a noite, media de manha,
+% energetica a tarde.
+  combina_horario(Id, Periodo) :-
+    horario(Periodo, Energia),
+    musica(Id, _, _, _, _, _, _, Energia, _).
+
+/* --------------------------------------------------------------------------
+  Filtragem por genero, artista e idioma:
+  Servem para o usuario restringir a busca.
+  -------------------------------------------------------------------------- */
+
+% do_genero(Id, Genero): a musica pertence ao genero.
+  do_genero(Id, Genero) :-
+    musica(Id, _, _, Genero, _, _, _, _, _).
+
+% da_familia(Id, Familia): o genero da musica pertence a familia.
+% Filtro mais amplo que do_genero.
+  da_familia(Id, Familia) :-
+    musica(Id, _, _, Genero, _, _, _, _, _),
+    genero(Genero, Familia).
+
+% do_artista(Id, Artista): a musica e do artista.
+  do_artista(Id, Artista) :-
+    musica(Id, _, Artista, _, _, _, _, _, _).
+
+% no_idioma(Id, Idioma): a letra da musica esta no idioma
+% (instrumental para musicas sem letra).
+  no_idioma(Id, Idioma) :-
+    musica(Id, _, _, _, _, Idioma, _, _, _).
