@@ -68,7 +68,6 @@
      genero_similar(Genero1, Genero2)
 
    ------------------------------------------------------------------------*/
-<<<<<<< HEAD
 
 /* =========================================================================
 
@@ -537,8 +536,8 @@
   romantica(Id) :-
     musica(Id, _, _, _, _, _, _, _, romantico).
 
-% motivacional(Id): base para recomendar por humor motivado e atividades
-% de energia alta.
+/* motivacional(Id): base para recomendar por humor motivado e atividades
+ de energia alta. */
   motivacional(Id) :-
     musica(Id, _, _, _, _, _, _, _, motivacional).
 
@@ -551,8 +550,8 @@
     musica(Id, _, _, _, Ano, _, _, _, _),
     Ano >= 2010.
 
-% intermediaria(Id): lancada de 2000 a 2009, entre antiga e recente,
-% para que toda musica caia numa faixa.
+/* intermediaria(Id): lancada de 2000 a 2009, entre antiga e recente,
+ para que toda musica caia numa faixa. */
   intermediaria(Id) :-
     musica(Id, _, _, _, Ano, _, _, _, _),
     Ano >= 2000,
@@ -581,8 +580,8 @@
     recente(Id),
     energetica(Id).
 
-% trilha_de_foco(Id): instrumental e calma, sem letra para distrair
-% (estudo).
+/* trilha_de_foco(Id): instrumental e calma, sem letra para distrair
+ (estudo). */
   trilha_de_foco(Id) :-
     instrumental(Id),
     calma(Id).
@@ -612,69 +611,184 @@
    -------------------------------------------------------------------------*/
 
 /* --------------------------------------------------------------------------
-  Compatibilidade com o contexto do usuario
-  -------------------------------------------------------------------------- */
+   Compatibilidade com o contexto do usuario
+   -------------------------------------------------------------------------- */
 
-% combina_humor(Id, Humor): a musica tem a energia e o clima que o humor
-% pede. Os dois atributos sao obrigatorios.
+/* combina_humor(Id, Humor): a musica tem a energia e o clima que o humor
+   pede. Os dois atributos sao obrigatorios. */
   combina_humor(Id, Humor) :-
     humor(Humor, Energia, Clima),
     musica(Id, _, _, _, _, _, _, Energia, Clima).
 
-% humor_ideal(Id, Humor): combina com o humor e o genero da musica e
-% tipico desse humor. E a compatibilidade mais forte.
+/* humor_ideal(Id, Humor): combina com o humor e o genero da musica e
+   tipico desse humor. E a compatibilidade mais forte. */
   humor_ideal(Id, Humor) :-
     combina_humor(Id, Humor),
     musica(Id, _, _, Genero, _, _, _, _, _),
     humor_combina_genero(Humor, Genero).
 
-% combina_atividade(Id, Atividade): a energia da musica e a da atividade
-% e mais um dos dois criterios abaixo. As duas clausulas funcionam como
-% "ou".
+/* combina_atividade(Id, Atividade): a energia da musica e a da atividade
+   e mais um dos dois criterios abaixo. As duas clausulas funcionam como
+   "ou". */
 
 % Criterio 1: o ritmo da musica e o da atividade.
   combina_atividade(Id, Atividade) :-
     atividade(Atividade, Energia, Ritmo),
     musica(Id, _, _, _, _, _, Ritmo, Energia, _).
 
-% Criterio 2: o genero e tipico da atividade (atividade_combina_genero).
-% O "\=" exclui as musicas que ja entraram no criterio 1, para nao
-% aparecerem repetidas. Este criterio cobre musicas de ritmo moderado e
-% energia alta ou baixa, que o ritmo sozinho deixaria sem nenhuma
-% atividade.
+/* Criterio 2: o genero e tipico da atividade (atividade_combina_genero).
+   O "\=" exclui as musicas que ja entraram no criterio 1, para nao
+   aparecerem repetidas. Este criterio cobre musicas de ritmo moderado e
+   energia alta ou baixa, que o ritmo sozinho deixaria sem nenhuma
+   atividade. */
   combina_atividade(Id, Atividade) :-
     atividade(Atividade, Energia, Ritmo),
     musica(Id, _, _, Genero, _, _, RitmoMusica, Energia, _),
     RitmoMusica \= Ritmo,
     atividade_combina_genero(Atividade, Genero).
 
-% combina_horario(Id, Periodo): a energia da musica e a mais adequada para
-% o periodo do dia: calma de madrugada e a noite, media de manha,
-% energetica a tarde.
+/* combina_horario(Id, Periodo): a energia da musica e a mais adequada para
+   o periodo do dia: calma de madrugada e a noite, media de manha,
+   energetica a tarde.*/
   combina_horario(Id, Periodo) :-
     horario(Periodo, Energia),
     musica(Id, _, _, _, _, _, _, Energia, _).
 
 /* --------------------------------------------------------------------------
-  Filtragem por genero, artista e idioma:
-  Servem para o usuario restringir a busca.
-  -------------------------------------------------------------------------- */
+   Filtragem por genero, artista e idioma:
+   Servem para o usuario restringir a busca.
+   -------------------------------------------------------------------------- */
 
-% do_genero(Id, Genero): a musica pertence ao genero.
+%  do_genero(Id, Genero): a musica pertence ao genero.
   do_genero(Id, Genero) :-
     musica(Id, _, _, Genero, _, _, _, _, _).
 
-% da_familia(Id, Familia): o genero da musica pertence a familia.
-% Filtro mais amplo que do_genero.
+/* da_familia(Id, Familia): o genero da musica pertence a familia.
+   Filtro mais amplo que do_genero. */
   da_familia(Id, Familia) :-
     musica(Id, _, _, Genero, _, _, _, _, _),
     genero(Genero, Familia).
 
-% do_artista(Id, Artista): a musica e do artista.
+%  do_artista(Id, Artista): a musica e do artista.
   do_artista(Id, Artista) :-
     musica(Id, _, Artista, _, _, _, _, _, _).
 
-% no_idioma(Id, Idioma): a letra da musica esta no idioma
-% (instrumental para musicas sem letra).
+/* no_idioma(Id, Idioma): a letra da musica esta no idioma
+   (instrumental para musicas sem letra). */
   no_idioma(Id, Idioma) :-
     musica(Id, _, _, _, _, Idioma, _, _, _).
+
+/* ==========================================================================
+
+   REGRAS DE RECOMENDAÇÃO E PLAYLIST:
+
+   ==========================================================================
+   Regras de recomendação combinada, regras de recomendação similar e
+   montagem de playlist a partir das recomendações e a quantidade de
+   músicas
+   -------------------------------------------------------------------------*/
+
+/* recomendar(Id, Humor, Atividade, Horario, Genero)
+   recomendacao combinada. A musica precisa combinar com o humor,
+   atvidade e o horario, com opcao do genero preferido */
+
+ recomendar(Id, Humor, Atividade, Horario, Genero) :-
+    combina_humor(Id, Humor),
+    combina_atividade(Id, Atividade),
+    combina_horario(Id, Horario),
+    do_genero(Id, Genero).
+
+/* recomendar_sem_genero(Id, Humor, Atividade, Horario)
+   Util quando o usuario quer apenas algo que
+   "combine com o momento" */
+
+ recomendar_sem_genero(Id, Humor, Atividade, Horario) :-
+    combina_humor(Id, Humor),
+    combina_atividade(Id, Atividade),
+    combina_horario(Id, Horario).
+
+/* recomendar_ideal(Id, Humor, atividade, Horario):
+   recomendacao a partir da regra humor_ideal, junto com atividade e
+   horario. */
+
+  recomendar_ideal(Id, Humor, Atividade, Horario) :-
+    humor_ideal(Id, Humor),
+    combina_atividade(Id, Atividade),
+    combina_horario(Id, Horario).
+
+/* recomendar_da_familia(Id, Humor, Atividade, Horario, Familia):
+   recomendacao combinada, mas toma-se como filtro, a familia do genero
+   */
+
+  recomendar_da_familia(Id, Humor, Atividade, Horario, Familia) :-
+    combina_humor(Id, Humor),
+    combina_atividade(Id, Atividade),
+    combina_horario(Id, Horario),
+    da_familia(Id, Familia).
+
+/* musica similar(Id, Genero):
+   a musica e de um genero pareccido com o informado. */
+
+  musica_similar(Id, Genero) :-
+    genero_similar(Genero, GeneroParecido),
+    do_genero(Id, GeneroParecido).
+
+/* recomendar_similar(Id, Humor, Atividade, Horario, Genero):
+   recomendacao combinada aceitando generos similares ao preferido.
+   usa de plano B caso musica_similar nao acha nada. */
+
+  recomendar_similar(Id, Humor, Atividade, Horario, Genero) :-
+    musica_similar(Id, Genero),
+    combina_humor(Id, Humor),
+    combina_atividade(Id, Atividade),
+    combina_horario(Id, Horario).
+
+
+/* --------------------------------------------------------------------------
+   Algoritmo para criacao de playlists a partir do humor, atividade,
+   horario, genero, a quantidade de musicas e os titulos.
+   -------------------------------------------------------------------------- */
+
+% Definicao de um algoritmo que gera uma lista limitada a N
+
+% Clausula 1: N = 0, retorna lista vazia
+  primeirosids(_, 0, []) :- !.
+% Clausula 2: Contador zerou e nao ha mais musicas, retorna lista vazia
+  primeirosids([], _, []) :-!.
+% Clausula 3: Cria a lista limitada, recebendo uma lista e a quantidade
+  primeirosids([X|Xs], N, [X|Ys]) :-
+    N > 0,
+    N1 is N - 1,
+    primeirosids(Xs, N1, Ys).
+
+% Definicao do algoritmo que cria a playlist.
+
+  playlist(Humor, Atividade, Horario, Genero, N, Titulos) :-
+    % Encontra todas as musicas que batem exatamente com os parametros
+    findall(Id, recomendar(Id, Humor, Atividade, Horario, Genero), Exatas),
+    % Encontra todas as musicas com parametros similares aos escolhidos
+    findall(Id, recomendar_similar(Id, Humor, Atividade, Horario, Genero), Similares),
+    % Junta as duas listas de musicas com parametros exatos e similares
+    append(Exatas, Similares, Todas),
+    % Exclui todas as repeticoes
+    list_to_set(Todas, SemRepetir),
+    % Cria a lista limitada a N
+    primeirosids(SemRepetir, N, Escolhidas),
+    % Expoe toda a playlist criada a partir dos parametros acima
+    findall(T, (member(Id, Escolhidas), musica(Id, T, _, _, _, _, _, _, _)), Titulos).
+
+/* Explicacao discursiva do algoritmo acima:
+
+   Algoritmo realizado a partir da premissa de obter musicas a partir das atividades
+   horarios, generos e humor. Primeiro, o algoritmo procura todas as
+   musicas que sao exatamente do humor, atividade e horario pedido e os
+   registra numa lista chamada Exatas, posteriormente, realiza a mesma
+   procura, porem com musicas similares, e as dispoe numa lista chamada
+   similares. Apos isso, e criada uma lista com todas essas musicas, a
+   lista Todas, que depois e filtrada, retirando as musicas repetidas,
+   resultando na lista SemRepetir. Entao, a partir de SemRepetir,
+   cria-se uma lista chamada Escolhidas, em que recebe a lista
+   SemRepetir com uma quantidade limitada, definida pelo usuario. A
+   lista Escolhidas é criada pelo algoritmo primeirosids. Enfim, o
+   algoritmo playlist expoe a playlist com todas as musicas escolhidas e
+   com o numero de musicas limitados por escolha do usuario. */
