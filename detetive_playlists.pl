@@ -790,3 +790,137 @@
   as melhores musicas ficam na frente. O primeirosids guarda so as N
   primeiras e cada id vira o titulo da musica. Se a playlist sair menor
   que o pedido, um aviso e exibido. */
+
+/* ==========================================================================
+   PREDICADOS DE CONSULTA:
+   Interface que o usuario chama no interpretador. Usam as regras acima
+   e mostram o resultado de forma legivel.
+   ========================================================================== */
+
+
+/* --------------------------------------------------------------------------
+   Ajuda: O que consultar e quais valores sao aceitos
+   -------------------------------------------------------------------------- */
+
+% ajuda: mostra as consultas disponiveis.
+  ajuda :-
+    nl, writeln('CONSULTAS DISPONIVEIS:'),
+    writeln('  opcoes.'),
+    writeln('  recomendar_playlist(Humor, Atividade, Horario, Genero).'),
+    writeln('  recomendar_playlist(Humor, Atividade, Horario, Genero, N).'),
+    writeln('  listar_por_genero(Genero).'),
+    writeln('  listar_por_idioma(Idioma).'),
+    writeln('  listar_por_artista(Artista).'),
+    writeln('  musicas_do_humor(Humor).'),
+    writeln('  musicas_da_atividade(Atividade).'),
+    writeln('  musicas_do_horario(Periodo).'),
+    writeln('  generos_parecidos(Genero).').
+
+% opcoes: mostra os valores que o usuario pode informar nas consultas.
+  opcoes :-
+    nl, findall(H, humor(H, _, _), Humores),
+    findall(A, atividade(A, _, _), Atividades),
+    findall(P, horario(P, _), Horarios),
+    findall(G, genero(G, _), Generos),
+    findall(I, idioma(I, _), Idiomas),
+    findall(R, artista(R, _, _), Artistas),
+    format("Humores: ~w~n", [Humores]),
+    format("Atividades: ~w~n", [Atividades]),
+    format("Horarios: ~w~n", [Horarios]),
+    format("Generos: ~w~n", [Generos]),
+    format("Idiomas: ~w~n", [Idiomas]),
+    format("Artistas: ~w~n", [Artistas]).
+
+% --------------------------------------------------------------------------
+% Apoio: mostrar listas de musicas
+% --------------------------------------------------------------------------
+
+% mostrar_playlist(Titulos): mostra a lista numerada com titulo e artista.
+  mostrar_playlist(Titulos) :-
+    (   Titulos == []
+    ->  writeln('Nenhuma musica encontrada.')
+    ;   mostrar_faixas(Titulos, 1)
+    ).
+
+% mostrar_faixas(Titulos, Pos): escreve uma faixa por linha, a partir de Pos.
+  mostrar_faixas([], _).
+  mostrar_faixas([T|Resto], Pos) :-
+    once(musica(_, T, Artista, _, _, _, _, _, _)),
+    format("~d. ~w - ~w~n", [Pos, T, Artista]),
+    Pos1 is Pos + 1,
+    mostrar_faixas(Resto, Pos1).
+
+/* pedido_valido(Humor, Atividade, Horario, Genero, N): confere se os valores
+   existem na base e se N e um inteiro positivo. */
+  pedido_valido(Humor, Atividade, Horario, Genero, N) :-
+    ground([Humor, Atividade, Horario, Genero]),
+    humor(Humor, _, _),
+    atividade(Atividade, _, _),
+    horario(Horario, _),
+    genero(Genero, _),
+    integer(N),
+    N > 0.
+
+/* --------------------------------------------------------------------------
+   Recomendacao de playlist
+   -------------------------------------------------------------------------- */
+
+% recomendar_playlist(Humor, Atividade, Horario, Genero): playlist de 5.
+  recomendar_playlist(Humor, Atividade, Horario, Genero) :-
+    recomendar_playlist(Humor, Atividade, Horario, Genero, 5).
+
+% recomendar_playlist(Humor, Atividade, Horario, Genero, N): valida o pedido,
+% monta a playlist e mostra a lista numerada.
+  recomendar_playlist(Humor, Atividade, Horario, Genero, N) :-
+    (   pedido_valido(Humor, Atividade, Horario, Genero, N)
+    ->  playlist(Humor, Atividade, Horario, Genero, N, Titulos),
+        mostrar_playlist(Titulos)
+    ;   writeln('Pedido invalido. Digite opcoes. para ver os valores aceitos (N deve ser inteiro positivo).')
+    ).
+
+/* --------------------------------------------------------------------------
+   Listagens por filtro
+   -------------------------------------------------------------------------- */
+
+% listar_por_genero(Genero): mostra as musicas do genero.
+  listar_por_genero(Genero) :-
+    findall(T, (do_genero(Id, Genero), musica(Id, T, _, _, _, _, _, _, _)), Titulos),
+    mostrar_playlist(Titulos).
+
+% listar_por_idioma(Idioma): mostra as musicas no idioma.
+  listar_por_idioma(Idioma) :-
+    findall(T, (no_idioma(Id, Idioma), musica(Id, T, _, _, _, _, _, _, _)), Titulos),
+    mostrar_playlist(Titulos).
+
+% listar_por_artista(Artista): mostra as musicas do artista.
+  listar_por_artista(Artista) :-
+    findall(T, (do_artista(Id, Artista), musica(Id, T, _, _, _, _, _, _, _)), Titulos),
+    mostrar_playlist(Titulos).
+
+/* --------------------------------------------------------------------------
+   Listagens por contexto (usam as regras de compatibilidade)
+   -------------------------------------------------------------------------- */
+
+% musicas_do_humor(Humor): mostra as musicas que combinam com o humor.
+  musicas_do_humor(Humor) :-
+    findall(T, (combina_humor(Id, Humor), musica(Id, T, _, _, _, _, _, _, _)), Titulos),
+    mostrar_playlist(Titulos).
+
+% musicas_da_atividade(Atividade): mostra as musicas que combinam com a atividade.
+  musicas_da_atividade(Atividade) :-
+    findall(T, (combina_atividade(Id, Atividade), musica(Id, T, _, _, _, _, _, _, _)), Titulos),
+    mostrar_playlist(Titulos).
+
+% musicas_do_horario(Periodo): mostra as musicas que combinam com o periodo do dia.
+  musicas_do_horario(Periodo) :-
+    findall(T, (combina_horario(Id, Periodo), musica(Id, T, _, _, _, _, _, _, _)), Titulos),
+    mostrar_playlist(Titulos).
+
+/* --------------------------------------------------------------------------
+   Similaridade
+   -------------------------------------------------------------------------- */
+
+% generos_parecidos(Genero): mostra os generos similares ao informado.
+  generos_parecidos(Genero) :-
+    findall(G, genero_similar(Genero, G), Lista),
+    format("Generos parecidos com ~w: ~w~n", [Genero, Lista]).
