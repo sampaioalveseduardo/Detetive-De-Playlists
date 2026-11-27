@@ -1,7 +1,6 @@
 /* ==========================================================================
                     SISTEMA DE RECOMENDACAO DE PLAYLISTS
-               Disciplina : Logica para Ciencias da Computacao
-
+               Disciplina : Logica para Ciencia da Computacao
    ==========================================================================
 
    MODELO DOS DADOS:
@@ -67,16 +66,15 @@
      atividade_combina_genero(Atividade, Genero)
      genero_similar(Genero1, Genero2)
 
-   ------------------------------------------------------------------------*/
+   -------------------------------------------------------------------------- */
 
-/* =========================================================================
+/* ==========================================================================
 
    FATOS DE APOIO:
 
-   =========================================================================
-   Generos: Familia agrupa generos parecidos
-   genero(Nome, Familia)
-   -------------------------------------------------------------------------*/
+   ==========================================================================
+   Generos: Familia agrupa generos parecidos genero(Nome, Familia)
+   -------------------------------------------------------------------------- */
 
  % familia: pop:
 
@@ -94,7 +92,6 @@
    genero(rock, rock).
    genero(metal, rock).
    genero(indie, rock).
-
 
 % familia: latino:
 
@@ -133,7 +130,7 @@
 /* --------------------------------------------------------------------------
     Idiomas:
     idioma(Nome, Regiao)
-   ------------------------------------------------------------------------*/
+   -------------------------------------------------------------------------- */
 
    idioma(portugues, brasil).
    idioma(ingles, internacional).
@@ -143,7 +140,7 @@
 /* --------------------------------------------------------------------------
     Ritmos:
     ritmo(Nome, Bpmmed)
-   ------------------------------------------------------------------------*/
+   -------------------------------------------------------------------------- */
 
    ritmo(lento, 70).
    ritmo(moderado, 100).
@@ -195,14 +192,14 @@
    humor. humor(Nome, Energia, Clima)
    -------------------------------------------------------------------------- */
 
-   humor(feliz,      media, alegre).
-   humor(animado,    alta,  alegre).
-   humor(motivado,   alta,  motivacional).
-   humor(triste,     baixa, melancolico).
-   humor(nostalgico, baixa, melancolico).
-   humor(romantico,  baixa, romantico).
-   humor(relaxado,   baixa, neutro).
-   humor(estressado, baixa, neutro).
+   humor(feliz,       media,  alegre).
+   humor(animado,     alta,   alegre).
+   humor(motivado,    alta,   motivacional).
+   humor(triste,      baixa,  melancolico).
+   humor(nostalgico,  baixa,  melancolico).
+   humor(romantico,   baixa,  romantico).
+   humor(relaxado,    baixa,  neutro).
+   humor(estressado,  baixa,  neutro).
 
 /* --------------------------------------------------------------------------
    Atividades:
@@ -214,25 +211,25 @@
    atividade(festa,   alta,  acelerado).
 
    % atividades de energia media:
-   atividade(trabalho,  media, moderado).
-   atividade(viagem,    media, moderado).
-   atividade(dirigir,   media, moderado).
-   atividade(cozinhar,  media, moderado).
+   atividade(trabalho,  media,  moderado).
+   atividade(viagem,    media,  moderado).
+   atividade(dirigir,   media,  moderado).
+   atividade(cozinhar,  media,  moderado).
 
    % atividades de baixa energia:
-   atividade(estudo,   baixa, lento).
-   atividade(relaxar,  baixa, lento).
-   atividade(dormir,   baixa, lento).
+   atividade(estudo,   baixa,  lento).
+   atividade(relaxar,  baixa,  lento).
+   atividade(dormir,   baixa,  lento).
 
 /* --------------------------------------------------------------------------
    Horarios: Energia mais adequada para cada periodo do dia.
    horario(Periodo, Energia)
    -------------------------------------------------------------------------- */
 
-   horario(madrugada, baixa).
-   horario(manha,     media).
-   horario(tarde,     alta).
-   horario(noite,     baixa).
+   horario(madrugada,  baixa).
+   horario(manha,      media).
+   horario(tarde,      alta).
+   horario(noite,      baixa).
 
 /* =========================================================================
 
@@ -240,7 +237,7 @@
 
    =========================================================================
    musica(Id, Titulo, Artista, Genero, Ano, Idioma, Ritmo, Energia, Clima)
-   -------------------------------------------------------------------------*/
+   ------------------------------------------------------------------------- */
 
    % brasileiras:
    musica(m01, show_das_poderosas, anitta, pop, 2013, portugues, acelerado, alta, alegre).
@@ -494,7 +491,7 @@
 
 /* --------------------------------------------------------------------------
   Por energia:
-  -------------------------------------------------------------------------- */
+  --------------------------------------------------------------------------- */
 
 % energetica(Id): Musica tem energia alta (agita, empolga).
   energetica(Id) :-
@@ -510,7 +507,7 @@
 
 /* --------------------------------------------------------------------------
   Por ritmo:
-  -------------------------------------------------------------------------- */
+  --------------------------------------------------------------------------- */
 
 % acelerada(Id): ritmo acelerado (130 bpm).
   acelerada(Id) :-
@@ -522,7 +519,7 @@
 
 /* --------------------------------------------------------------------------
   Por clima:
-  -------------------------------------------------------------------------- */
+  --------------------------------------------------------------------------- */
 
 % alegre(Id): base para recomendar por humor feliz/animado.
   alegre(Id) :-
@@ -537,13 +534,13 @@
     musica(Id, _, _, _, _, _, _, _, romantico).
 
 /* motivacional(Id): base para recomendar por humor motivado e atividades
- de energia alta. */
+   de energia alta. */
   motivacional(Id) :-
     musica(Id, _, _, _, _, _, _, _, motivacional).
 
 /* --------------------------------------------------------------------------
   Por epoca:
-  -------------------------------------------------------------------------- */
+  --------------------------------------------------------------------------- */
 
 % recente(Id): lancada de 2010 em diante, ultima decada.
   recente(Id) :-
@@ -551,7 +548,7 @@
     Ano >= 2010.
 
 /* intermediaria(Id): lancada de 2000 a 2009, entre antiga e recente,
- para que toda musica caia numa faixa. */
+   para que toda musica caia numa faixa. */
   intermediaria(Id) :-
     musica(Id, _, _, _, Ano, _, _, _, _),
     Ano >= 2000,
@@ -564,16 +561,16 @@
 
 /* --------------------------------------------------------------------------
   Classificacoes distintas:
-  -------------------------------------------------------------------------- */
+  --------------------------------------------------------------------------- */
 
 % instrumental(Id): musicas instrumentais.
   instrumental(Id) :-
     musica(Id, _, _, _, _, instrumental, _, _, _).
 
 /* --------------------------------------------------------------------------
-  Por combinacao: (mais de um atributo ou predicado):
+  Por combinacao: (mais de um atributo ou predicado).
   Reaproveitam as regras acima e cruzam musica com outros fatos.
-  -------------------------------------------------------------------------- */
+  --------------------------------------------------------------------------- */
 
 % hit_recente(Id): recente e energetica, ou seja, sucesso atual.
   hit_recente(Id) :-
@@ -608,7 +605,7 @@
    ==========================================================================
    Ligam uma musica ao contexto informado pelo usuario (humor, atividade,
    horario). Recebem o Id da musica e o contexto.
-   -------------------------------------------------------------------------*/
+   -------------------------------------------------------------------------- */
 
 /* --------------------------------------------------------------------------
    Compatibilidade com o contexto do usuario
@@ -649,7 +646,7 @@
 
 /* combina_horario(Id, Periodo): a energia da musica e a mais adequada para
    o periodo do dia: calma de madrugada e a noite, media de manha,
-   energetica a tarde.*/
+   energetica a tarde. */
   combina_horario(Id, Periodo) :-
     horario(Periodo, Energia),
     musica(Id, _, _, _, _, _, _, Energia, _).
@@ -659,7 +656,7 @@
    Servem para o usuario restringir a busca.
    -------------------------------------------------------------------------- */
 
-%  do_genero(Id, Genero): a musica pertence ao genero.
+% do_genero(Id, Genero): a musica pertence ao genero.
   do_genero(Id, Genero) :-
     musica(Id, _, _, Genero, _, _, _, _, _).
 
@@ -669,7 +666,7 @@
     musica(Id, _, _, Genero, _, _, _, _, _),
     genero(Genero, Familia).
 
-%  do_artista(Id, Artista): a musica e do artista.
+% do_artista(Id, Artista): a musica e do artista.
   do_artista(Id, Artista) :-
     musica(Id, _, Artista, _, _, _, _, _, _).
 
@@ -686,7 +683,7 @@
    Regras de recomendacao combinada, regras de recomendacao similar e
    montagem de playlist a partir das recomendacoes e quantidade de
    musicas
-   -------------------------------------------------------------------------*/
+   -------------------------------------------------------------------------- */
 
 /* recomendar(Id, Humor, Atividade, Horario, Genero)
    recomendacao combinada. A musica precisa combinar com o humor,
@@ -697,14 +694,6 @@
     combina_atividade(Id, Atividade),
     combina_horario(Id, Horario),
     do_genero(Id, Genero).
-
-/* recomendar_sem_genero(Id, Humor, Atividade, Horario)
-   util quando o usuario quer apenas algo que combine com o momento */
-
- recomendar_sem_genero(Id, Humor, Atividade, Horario) :-
-    combina_humor(Id, Humor),
-    combina_atividade(Id, Atividade),
-    combina_horario(Id, Horario).
 
 /* recomendar_ideal(Id, Humor, Atividade, Horario):
    recomendacao a partir da regra humor_ideal, junto com atividade e horario. */
@@ -747,14 +736,14 @@
 % Definicao de um algoritmo que gera uma lista limitada a N
 
 % Clausula 1: N = 0, retorna lista vazia
-  primeirosids(_, 0, []) :- !.
+  primeiros_ids(_, 0, []) :- !.
 % Clausula 2: Lista zerou e nao ha mais musicas, retorna lista vazia
-  primeirosids([], _, []) :- !.
+  primeiros_ids([], _, []) :- !.
 % Clausula 3: Cria a lista limitada, recebendo uma lista e a quantidade
-  primeirosids([X|Xs], N, [X|Ys]) :-
+  primeiros_ids([X|Xs], N, [X|Ys]) :-
     N > 0,
     N1 is N - 1,
-    primeirosids(Xs, N1, Ys).
+    primeiros_ids(Xs, N1, Ys).
 
 % Definicao do algoritmo que cria a playlist.
 
@@ -772,7 +761,7 @@
     % Remove repetidas
     list_to_set(Todas, SemRepetir),
     % Cria a lista limitada a N
-    primeirosids(SemRepetir, N, Escolhidas),
+    primeiros_ids(SemRepetir, N, Escolhidas),
     % Troca cada id pelo titulo da musica
     findall(T, (member(Id, Escolhidas), musica(Id, T, _, _, _, _, _, _, _)), Titulos),
 
@@ -781,22 +770,24 @@
     ( Qtd < N -> writeln('Aviso: a playlist veio menor que o pedido.') ; true ).
 
 /* COMO O ALGORITMO FUNCIONA:
- O playlist/6 monta a lista em niveis, do mais exigente ao mais flexivel:
+ O playlist monta a lista em niveis, do mais exigente ao mais flexivel:
     1) musicas que combinam com humor, atividade, horario e genero;
     2) o mesmo contexto, mas de generos parecidos ao escolhido;
     3) plano B: humor, atividade e genero, sem exigir o horario;
     4) plano B: apenas humor e genero.
   Os niveis sao juntados nessa ordem e as repetidas sao removidas, entao
-  as melhores musicas ficam na frente. O primeirosids guarda so as N
+  as melhores musicas ficam na frente. O primeiros_ids guarda so as N
   primeiras e cada id vira o titulo da musica. Se a playlist sair menor
   que o pedido, um aviso e exibido. */
 
 /* ==========================================================================
+
    PREDICADOS DE CONSULTA:
+
+   ==========================================================================
    Interface que o usuario chama no interpretador. Usam as regras acima
    e mostram o resultado de forma legivel.
-   ========================================================================== */
-
+   -------------------------------------------------------------------------- */
 
 /* --------------------------------------------------------------------------
    Ajuda: O que consultar e quais valores sao aceitos
@@ -804,17 +795,17 @@
 
 % ajuda: mostra as consultas disponiveis.
   ajuda :-
-    nl, writeln('CONSULTAS DISPONIVEIS:'),
-    writeln('  opcoes.'),
-    writeln('  recomendar_playlist(Humor, Atividade, Horario, Genero).'),
-    writeln('  recomendar_playlist(Humor, Atividade, Horario, Genero, N).'),
-    writeln('  listar_por_genero(Genero).'),
-    writeln('  listar_por_idioma(Idioma).'),
-    writeln('  listar_por_artista(Artista).'),
-    writeln('  musicas_do_humor(Humor).'),
-    writeln('  musicas_da_atividade(Atividade).'),
-    writeln('  musicas_do_horario(Periodo).'),
-    writeln('  generos_parecidos(Genero).').
+    nl, writeln('  CONSULTAS DISPONIVEIS:'),
+    nl, writeln('  1) opcoes.'),
+    writeln('  2) recomendar_playlist(Humor, Atividade, Horario, Genero).'),
+    writeln('  3) recomendar_playlist(Humor, Atividade, Horario, Genero, N).'),
+    writeln('  4) listar_por_genero(Genero).'),
+    writeln('  5) listar_por_idioma(Idioma).'),
+    writeln('  6) listar_por_artista(Artista).'),
+    writeln('  7) musicas_do_humor(Humor).'),
+    writeln('  8) musicas_da_atividade(Atividade).'),
+    writeln('  9) musicas_do_horario(Periodo).'),
+    writeln('  10) generos_parecidos(Genero).').
 
 % opcoes: mostra os valores que o usuario pode informar nas consultas.
   opcoes :-
@@ -824,16 +815,16 @@
     findall(G, genero(G, _), Generos),
     findall(I, idioma(I, _), Idiomas),
     findall(R, artista(R, _, _), Artistas),
-    format("Humores: ~w~n", [Humores]),
-    format("Atividades: ~w~n", [Atividades]),
-    format("Horarios: ~w~n", [Horarios]),
-    format("Generos: ~w~n", [Generos]),
-    format("Idiomas: ~w~n", [Idiomas]),
-    format("Artistas: ~w~n", [Artistas]).
+    format("Humores: ~n~w~n", [Humores]), nl,
+    format("Atividades: ~n~w~n", [Atividades]), nl,
+    format("Horarios: ~n~w~n", [Horarios]), nl,
+    format("Generos: ~n~w~n", [Generos]), nl,
+    format("Idiomas: ~n~w~n", [Idiomas]), nl,
+    format("Artistas: ~n~w~n", [Artistas]).
 
-% --------------------------------------------------------------------------
-% Apoio: mostrar listas de musicas
-% --------------------------------------------------------------------------
+/* --------------------------------------------------------------------------
+   Apoio: mostrar listas de musicas
+   -------------------------------------------------------------------------- */
 
 % mostrar_playlist(Titulos): mostra a lista numerada com titulo e artista.
   mostrar_playlist(Titulos) :-
@@ -869,8 +860,8 @@
   recomendar_playlist(Humor, Atividade, Horario, Genero) :-
     recomendar_playlist(Humor, Atividade, Horario, Genero, 5).
 
-% recomendar_playlist(Humor, Atividade, Horario, Genero, N): valida o pedido,
-% monta a playlist e mostra a lista numerada.
+/* recomendar_playlist(Humor, Atividade, Horario, Genero, N): valida o pedido,
+   monta a playlist e mostra a lista numerada. */
   recomendar_playlist(Humor, Atividade, Horario, Genero, N) :-
     (   pedido_valido(Humor, Atividade, Horario, Genero, N)
     ->  playlist(Humor, Atividade, Horario, Genero, N, Titulos),
